@@ -59,6 +59,14 @@
   .center {
     flex: 1;
     padding: 20px;
+    overflow: auto;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .center::-webkit-scrollbar {
+    display: none;
   }
   
   .bottom {
