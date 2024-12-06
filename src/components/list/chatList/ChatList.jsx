@@ -1,9 +1,10 @@
+import AddUser from "./addUser/AddUser";
 import "./chatList.css";
 import { useState } from "react";
 
 const ChatList = () => {
   // state for a dyanmic icon
-  const [plusMode, setPlusMode] = useState(false);
+  const [addMode, setAddMode] = useState(false);
   return (
     <div className="chatList">
       <div className="search">
@@ -13,10 +14,10 @@ const ChatList = () => {
         </div>
         {/* dynamic icon */}
         <img
-          src={plusMode ? "/minus.png" : "/plus.png"}
+          src={addMode ? "/minus.png" : "/plus.png"}
           alt=""
           className="plus"
-          onClick={() => setPlusMode((prevState) => !prevState)}
+          onClick={() => setAddMode((prevState) => !prevState)}
         />
       </div>
       <div className="item">
@@ -54,6 +55,7 @@ const ChatList = () => {
           <p>Hello </p>
         </div>
       </div>
+      {addMode && <AddUser />}
     </div>
   );
 };
