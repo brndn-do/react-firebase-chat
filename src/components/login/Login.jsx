@@ -12,6 +12,8 @@ const Login = () => {
     url: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleAvatar = (event) => {
     if (event.target.files[0]) {
       setAvatar({
@@ -23,6 +25,7 @@ const Login = () => {
 
   const handleRegister = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const formData = new FormData(event.target);
 
     const {username, email, password} = Object.fromEntries(formData);
@@ -49,6 +52,8 @@ const Login = () => {
     catch(error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,7 +69,7 @@ const Login = () => {
         <form onSubmit={handleLogin}>
           <input type="text" placeholder="Email" name="email" />
           <input type="text" placeholder="Password" name="password" />
-          <button>Sign in</button>
+          <button disabled={loading}>{loading ? "Loading" : "Sign In"}</button>
         </form>
       </div>
       <div className="separator"></div>
@@ -84,7 +89,7 @@ const Login = () => {
           <input type="text" placeholder="Username" name="username" />
           <input type="text" placeholder="Email" name="email" />
           <input type="text" placeholder="Password" name="password" />
-          <button>Sign Up</button>
+          <button disabled={loading}>{loading ? "Loading" : "Sign Up"}</button>
         </form>
       </div>
     </div>
