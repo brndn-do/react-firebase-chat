@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import "./login.css";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import upload from "../../lib/upload";
@@ -25,6 +25,10 @@ const Login = () => {
 
   const handleRegister = async (event) => {
     event.preventDefault();
+    if (!avatar.file) {
+      toast.warn("Please upload an image!");
+      return;
+    }
     setLoading(true);
     const formData = new FormData(event.target);
 
@@ -57,9 +61,23 @@ const Login = () => {
     }
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    toast.warn("Hello");
+    setLoading(true);
+
+    const formData = new FormData(event.target);
+    const {email, password} = Object.fromEntries(formData);
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    }
+    catch (error) {
+      console.log(error);
+      toast.error(error.message);  
+    }
+    finally {
+      setLoading(false);
+    }
   }
 
   return (
