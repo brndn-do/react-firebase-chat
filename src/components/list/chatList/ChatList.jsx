@@ -6,7 +6,6 @@ import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 
 const ChatList = () => {
-  // state for a dyanmic icon
   const [chats, setChats] = useState([]);
   const [addMode, setAddMode] = useState(false);
 
@@ -53,15 +52,15 @@ const ChatList = () => {
           onClick={() => setAddMode((prevState) => !prevState)}
         />
       </div>
-      {chats.map((chat) => {
+      {chats.map((chat) => (
         <div className="item" key={chat.chatId}>
-          <img src="./avatar.png" alt="" />
+          <img src={chat.user.avatar || "./avatar.png"} alt="" />
           <div className="texts">
-            <span>Jane Doe</span>
+            <span>{chat.user.username}</span>
             <p>{chat.lastMessage} </p>
           </div>
-        </div>;
-      })}
+        </div>
+      ))}
       {addMode && <AddUser />}
     </div>
   );
