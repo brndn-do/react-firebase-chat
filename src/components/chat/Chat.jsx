@@ -1,20 +1,38 @@
 import { useEffect, useRef, useState } from "react";
 import "./chat.css";
 import EmojiPicker from "emoji-picker-react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../lib/firebase";
+import { useChatStore } from "../../lib/chatStore";
 
 const Chat = () => {
+  const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+
+  const { chatId } = useChatStore();
 
   const endRef = useRef(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior : "instant" })
+    endRef.current?.scrollIntoView({ behavior: "instant" });
   }, []);
 
+  useEffect(() => {
+    const unSub = onSnapshot(doc(db, "chats", chatId), (res) => {
+      setChat(res.data());
+    });
+
+    return () => {
+      unSub();
+    };
+  }, [chatId]);
+
+  console.log(chat);
+
   const handleEmoji = (event) => {
-    setText(prev => prev + event.emoji);
-  }
+    setText((prev) => prev + event.emoji);
+  };
 
   return (
     <div className="chat">
@@ -33,47 +51,17 @@ const Chat = () => {
         </div>
       </div>
       <div className="center">
-        <div className="message">
-          <img src="/avatar.png" alt="" />
-          <div className="texts">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, illum deserunt laborum dignissimos saepe recusandae vero voluptatem sunt aperiam minima, reprehenderit ab ad incidunt animi quia itaque sed consequatur sapiente?</p>
-            <span>1m ago</span>
+        {chat?.messages?.map((message) => (
+          <div className="message own" key={message?.createdAt}>
+            <div className="texts">
+              {message.img && <img src={message.img} alt="" />}
+              <p>
+                {message.text}
+              </p>
+              {/* <span>{message.createdAt}</span> */}
+            </div>
           </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, illum deserunt laborum dignissimos saepe recusandae vero voluptatem sunt aperiam minima, reprehenderit ab ad incidunt animi quia itaque sed consequatur sapiente?</p>
-            <span>1m ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="/avatar.png" alt="" />
-          <div className="texts">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, illum deserunt laborum dignissimos saepe recusandae vero voluptatem sunt aperiam minima, reprehenderit ab ad incidunt animi quia itaque sed consequatur sapiente?</p>
-            <span>1m ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="/avatar.png" alt="" />
-          <div className="texts">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, illum deserunt laborum dignissimos saepe recusandae vero voluptatem sunt aperiam minima, reprehenderit ab ad incidunt animi quia itaque sed consequatur sapiente?</p>
-            <span>1m ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <img src="/bg.jpg" alt="" />
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, illum deserunt laborum dignissimos saepe recusandae vero voluptatem sunt aperiam minima, reprehenderit ab ad incidunt animi quia itaque sed consequatur sapiente?</p>
-            <span>1m ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="/avatar.png" alt="" />
-          <div className="texts">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, illum deserunt laborum dignissimos saepe recusandae vero voluptatem sunt aperiam minima, reprehenderit ab ad incidunt animi quia itaque sed consequatur sapiente?</p>
-            <span>1m ago</span>
-          </div>
-        </div>
+        ))}
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
@@ -82,11 +70,20 @@ const Chat = () => {
           <img src="/camera.png" alt="" />
           <img src="/mic.png" alt="" />
         </div>
-        <input type="text" value={text} placeholder="Type a message..." onChange={e => setText(e.target.value)}/>
+        <input
+          type="text"
+          value={text}
+          placeholder="Type a message..."
+          onChange={(e) => setText(e.target.value)}
+        />
         <div className="emoji">
-          <img src="/emoji.png" alt="" onClick={() => setOpen(prev => !prev)}/>
+          <img
+            src="/emoji.png"
+            alt=""
+            onClick={() => setOpen((prev) => !prev)}
+          />
           <div className="emojiPicker">
-            <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
+            <EmojiPicker open={open} onEmojiClick={handleEmoji} />
           </div>
         </div>
         <button className="sendButton">Send</button>
