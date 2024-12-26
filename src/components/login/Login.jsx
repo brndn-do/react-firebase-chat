@@ -96,7 +96,7 @@ const Login = () => {
         <h2>Create an Account</h2>
         <form onSubmit={handleRegister}>
           <label htmlFor="file">
-            <img src={avatar.url ? avatar.url : "/avatar.png"} alt="" />
+            <img src={avatar.url ? avatar.url : "./avatar.png"} alt="" />
             Upload an image
           </label>
           <input
