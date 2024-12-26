@@ -72,7 +72,7 @@ const ChatList = () => {
     <div className="chatList">
       <div className="search">
         <div className="searchBar">
-          <img src="/search.png" alt="" />
+          <img src="./search.png" alt="" />
           <input
             type="text"
             placeholder="Search"
@@ -81,7 +81,7 @@ const ChatList = () => {
         </div>
         {/* dynamic icon */}
         <img
-          src={addMode ? "/minus.png" : "/plus.png"}
+          src={addMode ? "./minus.png" : "/plus.png"}
           alt=""
           className="plus"
           onClick={() => setAddMode((prevState) => !prevState)}
@@ -99,8 +99,8 @@ const ChatList = () => {
           <img
             src={
               chat.user.blocked.includes(currentUser.id)
-                ? "/avatar.png"
-                : chat.user.avatar || "/avatar.png"
+                ? "./avatar.png"
+                : chat.user.avatar || "./avatar.png"
             }
             alt=""
           />
