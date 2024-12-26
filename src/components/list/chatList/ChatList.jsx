@@ -81,7 +81,7 @@ const ChatList = () => {
         </div>
         {/* dynamic icon */}
         <img
-          src={addMode ? "./minus.png" : "/plus.png"}
+          src={addMode ? "./minus.png" : "./plus.png"}
           alt=""
           className="plus"
           onClick={() => setAddMode((prevState) => !prevState)}
