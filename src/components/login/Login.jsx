@@ -84,9 +84,10 @@ const Login = () => {
     <div className="login">
       <div className="item">
         <h2>Welcome back,</h2>
+        <h6>(Try signing in with example below)</h6>
         <form onSubmit={handleLogin}>
-          <input type="text" placeholder="Email" name="email" />
-          <input type="text" placeholder="Password" name="password" />
+          <input type="text" placeholder="Email" name="email" defaultValue="example@gmail.com"/>
+          <input type="text" placeholder="Password" name="password" defaultValue="password"/>
           <button disabled={loading}>{loading ? "Loading" : "Sign In"}</button>
         </form>
       </div>
