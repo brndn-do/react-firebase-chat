@@ -1,6 +1,6 @@
 {
-  "homepage": "https://brndn-do.github.io/react-firebase-chat",
-  "name": "chat-starter",
+  "homepage": "https://brndn-do.github.io/chat-app-demo/",
+  "name": "chat-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
